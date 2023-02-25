@@ -1,0 +1,99 @@
+import DatagramSocket from 'java.net.DatagramSocket'
+import InetAddress from 'java.net.InetAddress'
+import DatagramPacket from 'java.net.DatagramPacket'
+import ByteArray from 'kotlin.ByteArray'
+import String from 'kotlin.String'
+
+export class UDPServer {
+	private port: Int
+	private byteSize: Int
+	private socket: DatagramSocket | null = null
+	private isListener = false
+
+	constructor(port: Int, byteSize: Int) {
+		this.port = port;
+		this.byteSize = byteSize
+	}
+
+	/** 监听接收消息 */
+	listener(receive: UTSCallback, error?: UTSCallback) {
+		if (this.socket != null) return
+		this.socket = new DatagramSocket(this.port)
+		const buff = new ByteArray(this.byteSize)
+		const packet = new DatagramPacket(buff, buff.size)
+		const _socket = this.socket;
+		setTimeout(() => {
+			if (_socket == null) return
+			this.isListener = true;
+			while (true) {
+				if (!this.isListener) return
+				try {
+					_socket.receive(packet)
+					const msg = new String(buff, 0, packet.getLength())
+					receive({
+						address: packet.getAddress(),
+						port: packet.getPort(),
+						size: msg.length,
+						msg,
+					})
+				} catch (e) {
+					error?.(e)
+					this.isListener = false
+				}
+			}
+		}, 0)
+	}
+
+	/** 向客户端发送消息 */
+	send(msg: string, host: string, port: Int) {
+		const bytes = msg.toByteArray()
+		const address = InetAddress.getByName(host)
+		this.socket?.send(new DatagramPacket(bytes, bytes.size, address, port))
+	}
+
+	/** 停止服务端 */
+	stop() {
+		this.isListener = false;
+		this.socket?.close()
+		this.socket = null
+	}
+}
+
+export class UDPClient {
+	private serverAddress: InetAddress
+	private serverPort: Int
+	private byteSize: Int
+
+	constructor(serverHost: String, serverPort: Int, byteSize: Int) {
+		this.serverAddress = InetAddress.getByName(serverHost)
+		this.serverPort = serverPort
+		this.byteSize = byteSize
+	}
+
+	send(msg: string, success: UTSCallback, error?: UTSCallback) {
+		const content = msg.toByteArray()
+		const socket = new DatagramSocket()
+
+		setTimeout(() => {
+			const buff = new ByteArray(this.byteSize)
+			const packet = new DatagramPacket(buff, buff.size)
+			try {
+				socket.setSoTimeout(5000)
+				socket.receive(packet)
+				const receiveMsg = new String(buff, 0, packet.getLength())
+				success({
+					address: packet.getAddress(),
+					port: packet.getPort(),
+					size: receiveMsg.length,
+					msg: receiveMsg
+				})
+			} catch (e) {
+				error?.(e)
+			} finally {
+				socket.close()
+			}
+		}, 1000)
+
+		socket.send(new DatagramPacket(content, content.size, this.serverAddress, this.serverPort))
+	}
+}

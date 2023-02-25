@@ -1,0 +1,78 @@
+<template>
+	<view class="content">
+		<view class="btns">
+			<button type="primary" size="mini" @click="onEnableClick">启动UDP服务</button>
+			<button type="warn" size="mini" @click="onDisableClick">停止UDP服务</button>
+		</view>
+		<view class="status">{{server?'UDP服务已启动' : 'UDP服务未启动'}}</view>
+		<view class="box">
+			<view v-for="item in messages" class="item">
+				<view class="info">
+					<text class="label">主机：{{item.address}}</text>
+					<text class="label">端口：{{item.port}}</text>
+				</view>
+				<view class="msg">消息：{{item.msg}}</view>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script lang="ts" setup>
+	import {
+		UDPServer
+	} from '../../uni_modules/uts-udp'
+	import {
+		ref
+	} from "vue";
+
+	const server = ref < UDPServer > ()
+	const messages = ref < Array < {
+		address: string,
+		port: number,
+		msg: string
+	} >> ([])
+
+	function onEnableClick() {
+		if (server.value) return;
+		server.value = new UDPServer(7000, 1024 * 64);
+		server.value.listener((rinfo) => {
+			messages.value.push(rinfo)
+			// 回复客户端
+			server.value.send(`已收到消息：${rinfo.msg}`, rinfo.address, rinfo.port)
+		}, error => {
+			console.log(error)
+		})
+	}
+
+	function onDisableClick() {
+		server.value.close();
+		server.value = undefined
+	}
+</script>
+
+<style lang="scss" scoped>
+	.content {
+		font-size: 15px;
+	}
+
+	.btns {
+		padding: 10px;
+		text-align: right;
+
+		button+button {
+			margin-left: 5px;
+		}
+	}
+
+	.box {
+		padding: 10px;
+
+		.item {
+			padding: 10px;
+
+			.label+.label {
+				margin-left: 10px;
+			}
+		}
+	}
+</style>

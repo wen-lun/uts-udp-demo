@@ -1,0 +1,32 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/server/server",
+			"style": {
+				"navigationBarTitleText": "服务端"
+			}
+		},
+		{
+			"path": "pages/client/client",
+			"style": {
+				"navigationBarTitleText": "客户端"
+			}
+		}
+	],
+	"tabBar": {
+		"list": [{
+			"text": "服务端",
+			"pagePath": "pages/server/server"
+		}, {
+			"text": "客户端",
+			"pagePath": "pages/client/client"
+		}]
+	},
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "udp-demo",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	},
+	"uniIdRouter": {}
+}
