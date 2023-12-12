@@ -1,14 +1,16 @@
 {
   "id": "uts-udp",
-  "displayName": "uts-udp",
-  "version": "1.0.0",
-  "description": "uts-udp",
+  "displayName": "jk-uts-udp",
+  "version": "2.0.0",
+  "description": "UDP通信插件",
   "keywords": [
-    "uts-udp"
+    "uts-udp",
+    "udp",
+    "jk-uts-udp"
 ],
-  "repository": "",
+  "repository": "https://github.com/wen-lun/uts-udp-demo",
   "engines": {
-    "HBuilderX": "^3.6.8"
+    "HBuilderX": "^3.6.18"
   },
   "dcloudext": {
     "type": "uts",
@@ -24,9 +26,9 @@
       "qq": ""
     },
     "declaration": {
-      "ads": "",
-      "data": "",
-      "permissions": ""
+      "ads": "无",
+      "data": "插件不采集任何数据",
+      "permissions": "无"
     },
     "npmurl": ""
   },
@@ -35,45 +37,45 @@
     "encrypt": [],
     "platforms": {
       "cloud": {
-        "tcb": "u",
-        "aliyun": "u"
+        "tcb": "y",
+        "aliyun": "y"
       },
       "client": {
         "Vue": {
-          "vue2": "u",
-          "vue3": "u"
+          "vue2": "y",
+          "vue3": "y"
         },
         "App": {
-          "app-android": "u",
-          "app-ios": "u"
+          "app-android": "y",
+          "app-ios": "n"
         },
         "H5-mobile": {
-          "Safari": "u",
-          "Android Browser": "u",
-          "微信浏览器(Android)": "u",
-          "QQ浏览器(Android)": "u"
+          "Safari": "n",
+          "Android Browser": "n",
+          "微信浏览器(Android)": "n",
+          "QQ浏览器(Android)": "n"
         },
         "H5-pc": {
-          "Chrome": "u",
-          "IE": "u",
-          "Edge": "u",
-          "Firefox": "u",
-          "Safari": "u"
+          "Chrome": "n",
+          "IE": "n",
+          "Edge": "n",
+          "Firefox": "n",
+          "Safari": "n"
         },
         "小程序": {
-          "微信": "u",
-          "阿里": "u",
-          "百度": "u",
-          "字节跳动": "u",
-          "QQ": "u",
-          "钉钉": "u",
-          "快手": "u",
-          "飞书": "u",
-          "京东": "u"
+          "微信": "n",
+          "阿里": "n",
+          "百度": "n",
+          "字节跳动": "n",
+          "QQ": "n",
+          "钉钉": "n",
+          "快手": "n",
+          "飞书": "n",
+          "京东": "n"
         },
         "快应用": {
-          "华为": "u",
-          "联盟": "u"
+          "华为": "n",
+          "联盟": "n"
         }
       }
     }

@@ -1,13 +1,13 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
-			"path": "pages/server/server",
+			"path": "pages/server",
 			"style": {
 				"navigationBarTitleText": "服务端"
 			}
 		},
 		{
-			"path": "pages/client/client",
+			"path": "pages/client",
 			"style": {
 				"navigationBarTitleText": "客户端"
 			}
@@ -16,10 +16,10 @@
 	"tabBar": {
 		"list": [{
 			"text": "服务端",
-			"pagePath": "pages/server/server"
+			"pagePath": "pages/server"
 		}, {
 			"text": "客户端",
-			"pagePath": "pages/client/client"
+			"pagePath": "pages/client"
 		}]
 	},
 	"globalStyle": {
