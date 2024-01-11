@@ -62,7 +62,7 @@ UDPClient.send({
 
 
 # 例子：
-## uni-app 项目demo
+## uni-app vue3项目demo
 * github: [uts-udp-demo](https://github.com/wen-lun/uts-udp-demo?_blank)
 * 服务端server.vue
 
@@ -194,6 +194,82 @@ function onSendClick() {
     padding: 10px;
 }
 </style>
+```
+
+## uni-app vue2项目demo
+* github: [uts-udp-demo-vue2](https://github.com/wen-lun/uts-udp-demo-vue2?_blank)
+* 服务端server.vue 
+
+```js
+import { UDPServer } from "@/uni_modules/uts-udp";
+
+let server = null;
+
+export default {
+    data() {
+        return {
+            isStart: false,
+            messages: []
+        };
+    },
+    methods: {
+        onEnableClick() {
+            if (this.isStart) return;
+            server = server || new UDPServer(7000);
+            server.listener(
+                (data) => {
+                    this.messages.push(data);
+                    // 回复客户端
+                    server.send(`已收到消息：${data.msg}`, data.host, data.port);
+                },
+                (error) => {
+                    console.error(error);
+                    this.isStart = false;
+                }
+            );
+            this.isStart = true;
+        },
+        onDisableClick() {
+            server?.stop();
+            this.isStart = false;
+        }
+    }
+};
+```
+
+* 客户端client.vue
+
+```js
+import { UDPClient } from "@/uni_modules/uts-udp";
+
+export default {
+    data() {
+        return {
+            msg: "",
+            messages: []
+        };
+    },
+    methods: {
+        onSendClick() {
+            UDPClient.send({
+                host: "255.255.255.255",
+                port: 7000,
+                receiveTimeout: 2000,
+                msg: this.msg,
+                enableRecive: true,
+                onceReceive: (data) => {
+                    this.messages.push(data);
+                },
+                onError: (error) => {
+                    console.error(error);
+                },
+                onceReceiveTimeout: () => {
+                    console.warn("服务器超时未回复");
+                }
+            });
+        }
+    }
+};
 ```
 
 ## uni-app x 项目demo
@@ -333,7 +409,6 @@ export default {
 </style>
 ```
 
-# uts-udp
 ### 开发文档
 [UTS 语法](https://uniapp.dcloud.net.cn/tutorial/syntax-uts.html?_blank)
 [UTS 原生插件](https://uniapp.dcloud.net.cn/plugin/uts-plugin.html?_blank)

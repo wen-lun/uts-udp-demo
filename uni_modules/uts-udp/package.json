@@ -1,7 +1,7 @@
 {
   "id": "uts-udp",
   "displayName": "jk-uts-udp",
-  "version": "2.0.0",
+  "version": "2.0.3",
   "description": "UDP通信插件",
   "keywords": [
     "uts-udp",
